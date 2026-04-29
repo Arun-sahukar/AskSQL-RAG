@@ -1,0 +1,35 @@
+name: asksql-api
+type: web
+definition:
+  git:
+    repository: github.com/Arun-sahukar/AskSQL-RAG
+    branch: main
+    workdir: backend
+    buildpack:
+      dockerfile:
+        path: Dockerfile
+  instance_types:
+    - type: free
+  regions:
+    - sgp1
+  ports:
+    - port: 8000
+      protocol: http
+  routes:
+    - path: /
+      port: 8000
+  env:
+    - key: GOOGLE_API_KEY
+      value: ""
+    - key: MYSQL_HOST
+      value: ""
+    - key: MYSQL_PORT
+      value: "4000"
+    - key: MYSQL_USER
+      value: ""
+    - key: MYSQL_PASSWORD
+      value: ""
+    - key: MYSQL_DATABASE
+      value: "asksql_demo"
+    - key: CHROMA_PERSIST_DIR
+      value: "/app/chroma_db"
