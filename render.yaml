@@ -1,0 +1,41 @@
+services:
+  # Backend API
+  - type: web
+    name: asksql-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    envVars:
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: MYSQL_HOST
+        sync: false
+      - key: MYSQL_PORT
+        value: 4000
+      - key: MYSQL_USER
+        sync: false
+      - key: MYSQL_PASSWORD
+        sync: false
+      - key: MYSQL_DATABASE
+        sync: false
+      - key: CHROMA_PERSIST_DIR
+        value: /app/chroma_db
+
+  # Frontend (Static Site)
+  - type: web
+    name: asksql-frontend
+    runtime: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    plan: free
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://asksql-api.onrender.com/api/*
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: asksql-api
+          property: host

@@ -10,7 +10,7 @@ settings = get_settings()
 
 # Initialize Gemini LLM
 llm = ChatGoogleGenerativeAI(
-    model="gemini-pro-latest",
+    model="gemini-2.5-flash-lite",
     google_api_key=settings.google_api_key,
     temperature=0,
     convert_system_message_to_human=True
